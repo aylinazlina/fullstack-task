@@ -5,6 +5,7 @@ import {connectDB} from "./database/db";
 
 import authRoutes from "./routes/auth.routes";
 import {seedAdmin} from './utils/seedAdmin';
+import inviteRoutes from "./routes/invite.routes";
 
 
 
@@ -29,5 +30,11 @@ app.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);
 });
 
+
+
+
 app.use("/auth",authRoutes);
+app.use("/auth/invite",inviteRoutes );
+
+
 
