@@ -6,7 +6,7 @@ import {isAdmin} from "../middlewares/role.middleware";
 
 const router= Router();
 
-router.post("/",protect,isAdmin,createInvite);
+router.post("/invite-create",protect,isAdmin,createInvite);
 
 
 export default router;

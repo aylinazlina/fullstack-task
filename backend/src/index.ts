@@ -7,6 +7,8 @@ import authRoutes from "./routes/auth.routes";
 import {seedAdmin} from './utils/seedAdmin';
 import inviteRoutes from "./routes/invite.routes";
 
+import userRoutes from "./routes/user.routes";
+
 
 
 
@@ -17,8 +19,20 @@ const app= express();
 app.use(cors());
 app.use(express.json());
 
+
+//todo:Databse and seeding
 connectDB();
 seedAdmin();
+
+
+//todo:routes
+
+app.use("/auth",authRoutes);
+app.use("/auth/invite",inviteRoutes );
+app.use("/users",userRoutes);
+
+
+
 app.get("/",(req,res)=>{
     res.send("Server is running !!");
 
@@ -33,8 +47,9 @@ app.listen(PORT,()=>{
 
 
 
-app.use("/auth",authRoutes);
-app.use("/auth/invite",inviteRoutes );
+
+
+
 
 
 
