@@ -5,7 +5,7 @@ export interface IProject extends Document{
     description?:string;
     status:"ACTIVE" | "ARCHIVED" | "DELETE";
     isDeleted:boolean;
-    createdAt:mongoose.Types.ObjectId;
+    createdBy:mongoose.Types.ObjectId;
 
 
 
@@ -20,7 +20,7 @@ const ProjectSchema=new Schema<IProject>({
         default: "ACTIVE",
     },
     isDeleted:{type:Boolean,default:false},
-    createdAt:{type:mongoose.Types.ObjectId,ref: "User"},
+    createdBy:{type:mongoose.Types.ObjectId,ref: "User"},
 },{timestamps:true});
 
 

@@ -8,6 +8,7 @@ import {seedAdmin} from './utils/seedAdmin';
 import inviteRoutes from "./routes/invite.routes";
 
 import userRoutes from "./routes/user.routes";
+import projectRoutes from "./routes/project.routes" ;
 
 
 
@@ -30,6 +31,7 @@ seedAdmin();
 app.use("/auth",authRoutes);
 app.use("/auth/invite",inviteRoutes );
 app.use("/users",userRoutes);
+app.use("/projects" ,projectRoutes);
 
 
 
