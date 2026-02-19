@@ -45,42 +45,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-// export const registerViaInvite= async(req:Request,res:Response)=>{
-//    try{
-//    const  {token,name,password}= req.body;
-//    const invite = await Invite.findOne({token});
-//    if(!invite){
-//      return res.status(400).json({
-//       message:"Invalid invite token"
-//      })
-//     }
-//     if(invite.expiresAt < new Date()){
-//       return res.status(400).json({message:"Invite already used"});
-//     }
 
-//    const hashedPassword = await hashPassword(password);
-
-//    //todo:Create user
-//    const user = await User.create({
-//       name,
-//       email:invite.email,
-//       password:hashedPassword,
-//       role:invite.role,
-//       invitedAT: new Date(),
-//       status: "ACTIVE",
-//      })
-//      //todo:Mark invite as accepted
-//      invite.acceptedAt =new Date();
-//      await invite.save();
-//      return res.status(201).json({
-//       message: "User registered successfully"
-//      });
-
-//    }
-//    catch(error){
-//      return res.status(500).json({message:"Registration failed"});
-//    }
-// }
 
 export const registerViaInvite = async (req: Request, res: Response) => {
   try {
