@@ -6,6 +6,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminRoute from "./routes/AdminRoute" ;
 import UsersPage from "./pages/UsersPage";
 import ProjectsPage from "./pages/ProjectPages";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Don't forget the CSS!
 
 
 
@@ -13,6 +15,11 @@ import ProjectsPage from "./pages/ProjectPages";
 function App(){
   return(
     <BrowserRouter>
+    <ToastContainer 
+        position="top-right" 
+        autoClose={3000} 
+        theme="colored" 
+      />
     <Routes>
       <Route path="/" element={<LoginPage/>}/>
       <Route path="/dashboard" element={
