@@ -43,7 +43,7 @@ const LoginPage = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{bgcolor:'background.default',color:'text.primary',minHeight:'100vh', mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h4" gutterBottom>Login</Typography>
         <TextField
           fullWidth

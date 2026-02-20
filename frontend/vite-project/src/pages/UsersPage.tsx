@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {Pagination} from "@mui/material";
 import {
   Container,
   Typography,
@@ -15,27 +16,54 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import {type  RootState } from "../app/store";
 
-const UsersPage = () => {
+
+interface UsersProps {
+  toggleTheme:()=>void;
+  mode:"light" | "dark";
+}
+
+const UsersPage = ({toggleTheme,mode}:UsersProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
   const [users, setUsers] = useState<any[]>([]);
+  const [page,setPage]= useState(1);
+  const [totalPages,setTotalPages]= useState(1);
 
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get("http://localhost:4000/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // const fetchUsers = async () => {
+  //   try {
+  //     const res = await axios.get("http://localhost:4000/users", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      setUsers(res.data.users);
-    } catch (error) {
-      console.error("Failed to fetch users");
+  //     setUsers(res.data.users);
+  //   } catch (error) {
+  //     console.error("Failed to fetch users");
+  //   }
+  // };
+
+  const fetchUsers = async (pageNumber = 1) => {
+  const res = await axios.get(
+    `http://localhost:4000/users?page=${pageNumber}&limit=5`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
-  };
+  );
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  setUsers(res.data.users);
+  setTotalPages(Math.ceil(res.data.total / 5));
+};
+
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
+
+
+  useEffect(()=>{
+    fetchUsers(page);
+  },[page]);
 
   const updateRole = async (id: string, role: string) => {
     await axios.patch(
@@ -48,7 +76,7 @@ const UsersPage = () => {
       }
     );
 
-    fetchUsers();
+    fetchUsers(page);
   };
 
   const updateStatus = async (id: string, status: string) => {
@@ -62,11 +90,14 @@ const UsersPage = () => {
       }
     );
 
-    fetchUsers();
+    fetchUsers(page);
   };
 
   return (
     <Container>
+      <Button variant="outlined" onClick={toggleTheme} sx={{mb:2,mt:4} }>
+        Switch to {mode === "light" ? "Dark" : "Light" } Mode
+      </Button>
       <Typography variant="h4" gutterBottom>
         User Management
       </Typography>
@@ -128,6 +159,13 @@ const UsersPage = () => {
           ))}
         </TableBody>
       </Table>
+
+      <Pagination
+  count={totalPages}
+  page={page}
+  onChange={(event, value) => setPage(value)}
+  sx={{ mt: 3 }}
+/>
     </Container>
   );
 };

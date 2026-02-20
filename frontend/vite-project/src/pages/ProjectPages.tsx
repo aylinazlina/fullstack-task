@@ -14,7 +14,13 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import {type RootState } from "../app/store";
 
-const ProjectsPage = () => {
+
+interface ProjectsProps {
+  toggleTheme:()=>void;
+  mode:"light" | "dark";
+}
+
+const ProjectsPage = ({toggleTheme,mode}:ProjectsProps) => {
   const { token, user } = useSelector((state: RootState) => state.auth);
   const [projects, setProjects] = useState<any[]>([]);
   const [name, setName] = useState("");
@@ -87,6 +93,9 @@ const ProjectsPage = () => {
 
   return (
     <Container>
+        <Button variant="outlined" onClick={toggleTheme} sx={{mb:2,mt:4} }>
+        Switch to {mode === "light" ? "Dark" : "Light" } Mode
+      </Button>
       <Typography variant="h4" gutterBottom>
         Project Management
       </Typography>
@@ -130,10 +139,10 @@ const ProjectsPage = () => {
         <TableCell>
           {user?.role === "ADMIN" && (
             <>
-              <Button size="small" onClick={() => updateProject(project._id)}>
+              <Button  variant="contained" size="small"  onClick={() => updateProject(project._id)}>
                 Edit
               </Button>
-              <Button size="small" color="error" onClick={() => deleteProject(project._id)}>
+              <Button variant="contained" size="small" color="error" onClick={() => deleteProject(project._id)}>
                 Delete
               </Button>
             </>

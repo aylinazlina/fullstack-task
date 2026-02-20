@@ -7,36 +7,39 @@ import AdminRoute from "./routes/AdminRoute" ;
 import UsersPage from "./pages/UsersPage";
 import ProjectsPage from "./pages/ProjectPages";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Don't forget the CSS!
+import "react-toastify/dist/ReactToastify.css"; 
 
 
+interface AppProps{
+  toggleTheme:()=>void;
+  mode:"light" | "dark";
+}
 
-
-function App(){
+function App({toggleTheme,mode}:AppProps){
   return(
     <BrowserRouter>
     <ToastContainer 
         position="top-right" 
         autoClose={3000} 
-        theme="colored" 
+        theme={mode} 
       />
     <Routes>
       <Route path="/" element={<LoginPage/>}/>
       <Route path="/dashboard" element={
         <ProtectedRoute>
-          <Dashboard/>
+          <Dashboard toggleTheme={toggleTheme} mode={mode}/>
         </ProtectedRoute>
       }/>
       <Route path="/users" element={
         <ProtectedRoute>
           <AdminRoute>
-            <UsersPage/>
+            <UsersPage toggleTheme={toggleTheme} mode={mode}/>
           </AdminRoute>
         </ProtectedRoute>
       } />
 
       <Route path="/projects" element={<ProtectedRoute>
-        <ProjectsPage/>
+        <ProjectsPage toggleTheme={toggleTheme} mode={mode}/>
       </ProtectedRoute>} />
       <Route path="/register" element={<Register/>}/>
     </Routes>

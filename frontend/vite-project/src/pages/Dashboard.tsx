@@ -5,7 +5,12 @@ import { logout } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Dashboard = () => {
+interface DashboardProps {
+  toggleTheme:()=>void;
+  mode:"light" | "dark";
+}
+
+const Dashboard = ({toggleTheme,mode}:DashboardProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
@@ -25,8 +30,14 @@ const Dashboard = () => {
     );
   }
 
+
+
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
+
+      <Button variant="outlined" onClick={toggleTheme} sx={{mb:2}}>
+        Switch to {mode === "light" ? "Dark" : "Light" } Mode
+      </Button>
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
