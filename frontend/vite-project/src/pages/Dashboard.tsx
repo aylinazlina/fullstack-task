@@ -6,11 +6,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 interface DashboardProps {
-  toggleTheme:()=>void;
-  mode:"light" | "dark";
+  toggleTheme: () => void;
+  mode: "light" | "dark";
 }
 
-const Dashboard = ({toggleTheme,mode}:DashboardProps) => {
+const Dashboard = ({ toggleTheme, mode }: DashboardProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
@@ -22,21 +22,21 @@ const Dashboard = ({toggleTheme,mode}:DashboardProps) => {
   };
 
   // Loading state
-  if (token && !user) {
+  if (!user) {
     return (
       <Container>
-        <Typography sx={{ mt: 4 }}>Loading user profile...</Typography>
+        <Typography sx={{ mt: 4 }}>
+          User session not found. Please log in again.
+        </Typography>
+        <Button onClick={() => navigate("/")}>Go to Login</Button>
       </Container>
     );
   }
 
-
-
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-
-      <Button variant="outlined" onClick={toggleTheme} sx={{mb:2}}>
-        Switch to {mode === "light" ? "Dark" : "Light" } Mode
+      <Button variant="outlined" onClick={toggleTheme} sx={{ mb: 2 }}>
+        Switch to {mode === "light" ? "Dark" : "Light"} Mode
       </Button>
       <Typography variant="h4" gutterBottom>
         Dashboard
@@ -68,11 +68,19 @@ const Dashboard = ({toggleTheme,mode}:DashboardProps) => {
           Manage Projects
         </Button>
 
-        <Button 
-          variant="contained" 
-          color="error" 
-          onClick={handleLogout}
-        >
+        {user?.role === "ADMIN" && (
+  <Button
+    component={Link}
+    to="/invite"
+    variant="contained"
+    color="secondary"
+    sx={{ mt: 2, mr: 2 }}
+  >
+    Send Invite
+  </Button>
+)}
+
+        <Button variant="contained" color="error" onClick={handleLogout}>
           Logout
         </Button>
       </Box>

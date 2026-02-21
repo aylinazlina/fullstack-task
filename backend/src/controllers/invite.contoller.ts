@@ -1,40 +1,32 @@
-import {Request,Response} from "express";
+import { randomBytes } from "crypto";
+import { RequestHandler } from "express";
 import Invite from "../models/Invite";
-import crypto, { randomBytes } from "crypto";
- 
-export const createInvite= async(req:Request,res:Response)=>{
-    try{
+import { sendInviteEmail } from "../utils/sendEmails";
 
-        const {email,role}= req.body;
-        //todo:Generate token
-        const token= randomBytes(32).toString("hex");
+export const createInvite: RequestHandler = async (req, res) => {
+  try {
+    const { email, role } = req.body;
 
-        //todo:set expiry(24hours)
+    const token = randomBytes(32).toString("hex");
 
-        const expiresAt= new Date();
-       expiresAt.setHours(expiresAt.getHours() + 24);
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24);
 
-       //todo:save invite db
+    await Invite.create({
+      email,
+      role,
+      token,
+      expiresAt,
+    });
 
-        const invite= await Invite.create({
-        email,
-        role,
-        token,
-        expiresAt,
-       });
-    
+    await sendInviteEmail(email, token);
 
-       //todo:return invite token(email simulation)
+    res.status(201).json({
+      message: "Invite sent successfully via email",
+    });
 
-       res.status(201).json({
-        message:"Invite created successfully",
-        inviteLink:`http://localhost:3000/register?token=${token}`,
-        invite,
-       });
-    
-    }catch(error){
-        return res.status(500).json({
-            message:"Invite creation failed"
-        })
-    }
+  } catch (error) {
+    console.error(error);
+    res.status
+}
 }

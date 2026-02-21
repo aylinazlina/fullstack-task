@@ -8,11 +8,13 @@ import {
 import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
+
 const Register = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+ 
+const token = searchParams.get("token");
 
-  const token = searchParams.get("token");
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
