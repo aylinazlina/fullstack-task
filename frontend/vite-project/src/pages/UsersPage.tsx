@@ -23,7 +23,7 @@ interface UsersProps {
 }
 
 const UsersPage = ({toggleTheme,mode}:UsersProps) => {
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { token, user: currentUser } = useSelector((state: RootState) => state.auth);
   const [users, setUsers] = useState<any[]>([]);
   const [page,setPage]= useState(1);
   const [totalPages,setTotalPages]= useState(1);
@@ -113,51 +113,56 @@ const UsersPage = ({toggleTheme,mode}:UsersProps) => {
           </TableRow>
         </TableHead>
 
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user._id}>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
+       <TableBody>
+  {users.map((user) => {
+    // Check if the user in this row is the logged-in user
+    const isSelf = user._id === currentUser?.id || user._id === (currentUser as any)?.id;
 
-              <TableCell>
-                <Select
-                  value={user.role}
-                  onChange={(e) =>
-                    updateRole(user._id, e.target.value)
-                  }
-                >
-                  <MenuItem value="ADMIN">ADMIN</MenuItem>
-                  <MenuItem value="MANAGER">MANAGER</MenuItem>
-                  <MenuItem value="STAFF">STAFF</MenuItem>
-                </Select>
-              </TableCell>
+    return (
+      <TableRow key={user._id}>
+        <TableCell>{user.name}</TableCell>
+        <TableCell>{user.email}</TableCell>
 
-              <TableCell>{user.status}</TableCell>
+        <TableCell>
+          <Select
+            value={user.role}
+            // FIX: Disable role selection for self
+            disabled={isSelf}
+            onChange={(e) => updateRole(user._id, e.target.value)}
+            size="small"
+          >
+            <MenuItem value="ADMIN">ADMIN</MenuItem>
+            <MenuItem value="MANAGER">MANAGER</MenuItem>
+            <MenuItem value="STAFF">STAFF</MenuItem>
+          </Select>
+          {isSelf && (
+            <Typography variant="caption" display="block" color="textSecondary">
+              (You)
+            </Typography>
+          )}
+        </TableCell>
 
-              <TableCell>
-                {user.status === "ACTIVE" ? (
-                  <Button
-                    color="error"
-                    onClick={() =>
-                      updateStatus(user._id, "INACTIVE")
-                    }
-                  >
-                    Deactivate
-                  </Button>
-                ) : (
-                  <Button
-                    color="success"
-                    onClick={() =>
-                      updateStatus(user._id, "ACTIVE")
-                    }
-                  >
-                    Activate
-                  </Button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        <TableCell>{user.status}</TableCell>
+
+        {/* FIX: Combined the two separate TableCells into one clean Actions cell */}
+        <TableCell>
+          <Button
+            variant="contained"
+            size="small"
+            color={user.status === "ACTIVE" ? "error" : "success"}
+            // Disable status toggle for self
+            disabled={isSelf}
+            onClick={() =>
+              updateStatus(user._id, user.status === "ACTIVE" ? "INACTIVE" : "ACTIVE")
+            }
+          >
+            {user.status === "ACTIVE" ? "Deactivate" : "Activate"}
+          </Button>
+        </TableCell>
+      </TableRow>
+    );
+  })}
+</TableBody>
       </Table>
 
       <Pagination
