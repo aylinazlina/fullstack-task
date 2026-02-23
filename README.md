@@ -1,6 +1,6 @@
 # FullStack Task
 
-A role-based project management system.
+A role-based project management system.Admin send invitation via email.User register via clicking that invitation link.Deactivated users can not login.
 
 ## Installation
 1. Clone this repository
@@ -34,6 +34,10 @@ npm run dev
 admin@test.com
 
 password: admin123
+
+### Manager Credentials
+azlinaarabi@gmail.com
+password:Azlina Arabi Hossain Aylin
 
 
 ### Tech Stack
