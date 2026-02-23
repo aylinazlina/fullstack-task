@@ -1,6 +1,6 @@
 # FullStack Task
 
-A role-based project management system.Admin send invitation via email.User register via clicking that invitation link.Deactivated users can not login.
+A role-based project management system.Admin send invitation via email.Users register via clicking that invitation link.Deactivated users can not login.
 
 ## Installation
 1. Clone this repository
